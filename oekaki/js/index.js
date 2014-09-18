@@ -2,7 +2,6 @@
 
 window.onload = function(){
 	var app = new App();
-	var ws
 };
 
 var Class = function(parent){
