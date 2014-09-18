@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Oekaki</title>
+	<script type="text/javascript" src="./js/index.js" ></script>
+	<style>
+		body{
+			margin: 0;
+			background-color: #EEE;
+			text-align: center;
+		}
+		#wrap {
+			position:relative;
+			margin: 2em auto;
+			border: solid 1px #999;
+			background-color: #FFF;
+			width: 1280px;
+			height: 768px;
+		}
+		canvas{
+			position: absolute;
+			top: 0;
+			left: 0;
+			margin: 0;
+			padding: 0;
+		}
+		#top {
+			z-index: 1;
+		}
+		#bottom {
+			z-index: 0;
+		}
+	</style>
+</head>
+<body>
+<div id="wrap">
+	<canvas id="bottom" width="1280" height="768"></canvas>
+	<canvas id="top" width="1280" height="768"></canvas>
+</div>
+</body>
+</html>
