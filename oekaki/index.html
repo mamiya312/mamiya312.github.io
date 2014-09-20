@@ -11,7 +11,7 @@
 		}
 		#wrap {
 			position:relative;
-			margin: 2em auto;
+			margin: auto;
 			border: solid 1px #999;
 			background-color: #FFF;
 			width: 1280px;
@@ -30,12 +30,19 @@
 		#bottom {
 			z-index: 0;
 		}
+		#tools {
+			margin: 1em;
+		}
 	</style>
 </head>
 <body>
-<div id="wrap">
-	<canvas id="bottom" width="1280" height="768"></canvas>
-	<canvas id="top" width="1280" height="768"></canvas>
-</div>
+	<div id="tools">
+		<input type="number" id="size" value="1" min="1" max="50" />
+		<input type="color"  id="color" value="#0000FF" />
+	</div>
+	<div id="wrap">
+		<canvas id="bottom" width="1280" height="768"></canvas>
+		<canvas id="top" width="1280" height="768"></canvas>
+	</div>
 </body>
 </html>

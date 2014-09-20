@@ -38,6 +38,9 @@ App.fn.init = function(){
 	this.uuid = '';
 	this.prevs = {};
 
+	this.uiSize  = document.getElementById('size');
+	this.uiColor = document.getElementById('color');
+
 	this.ws = new WebSocket('ws://test.mfmican.net/oekaki');
 	this.ws.onopen = function(){
 		this.mouse = new Mouse(_self);
@@ -45,29 +48,38 @@ App.fn.init = function(){
 	this.ws.onmessage = function(d){
 		var json = JSON.parse(d.data);
 		console.log(json);
-		if(json.cmd=='b'||(json.cmd=='m'&&!(json.uuid in _self.prevs))){
-			var p = {};
+		var p = {};
+		if(json.cmd==='b'||(json.cmd==='m'&&!(json.uuid in _self.prevs))){
 			p.x = json.x;
 			p.y = json.y;
 			_self.prevs[json.uuid] = p;
-		}else if(json.cmd =='m'){
-			var p = {};
+		}else if(json.cmd ==='m'){
 			p.x = json.x;
 			p.y = json.y;
+			_self.bctx.strokeStyle = 'rgb('+json.c[0]+','+json.c[1]+','+json.c[2]+')';
+			_self.bctx.fillStyle = 'rgb('+json.c[0]+','+json.c[1]+','+json.c[2]+')';
+			_self.bctx.lineWidth = json.s;
 			_self.bctx.beginPath();
 			_self.bctx.moveTo(_self.prevs[json.uuid].x,_self.prevs[json.uuid].y);
 			_self.bctx.lineTo(p.x,p.y);
 			_self.bctx.stroke();
 			_self.prevs[json.uuid] = p;
-		}else if(json.cmd == 'u'){
+		}else if(json.cmd === 'u'){
 			delete _self.prevs[json.uuid];
-		}else if(json.cmd == 'client'){
+		}else if(json.cmd === 'client'){
 			_self.uuid = json.uuid;
 		}
 	};
 };
 App.fn.send = function(val){
 	val.uuid = this.uuid;
+	val.s = parseInt(this.uiSize.value,10);
+	var tmp = this.uiColor.value;
+	var c = [];
+	c[0] = parseInt(tmp[1]+tmp[2],16);
+	c[1] = parseInt(tmp[3]+tmp[4],16);
+	c[2] = parseInt(tmp[5]+tmp[6],16);
+	val.c = c;
 	this.ws.send(JSON.stringify(val));
 };
 
@@ -100,8 +112,8 @@ Mouse.fn.down = function(e){
 	if(e.button===this.LEFT_BUTTON){
 		this.leftButtonState = true;
 		var p = this.getPosition(e);
-		this.app.ctx.beginPath();
-		this.app.ctx.moveTo(p.x,p.y);
+		//this.app.ctx.beginPath();
+		//this.app.ctx.moveTo(p.x,p.y);
 		this.app.send({'cmd':'d','y':p.y,'x':p.x});
 	}
 };
@@ -109,23 +121,23 @@ Mouse.fn.up = function(e){
 	if(e.button===this.LEFT_BUTTON){
 		this.leftButtonState = false;
 		var p = this.getPosition(e);
-		this.app.ctx.lineTo(p.x,p.y);
-		this.app.ctx.stroke();
+		//this.app.ctx.lineTo(p.x,p.y);
+		//this.app.ctx.stroke();
 		this.app.send({'cmd':'u','y':p.y,'x':p.x});
 	}
 };
 Mouse.fn.move = function(e){
 	if(this.leftButtonState===true){
 		var p = this.getPosition(e);
-		this.app.ctx.lineTo(p.x,p.y);
-		this.app.ctx.stroke();
+		//this.app.ctx.lineTo(p.x,p.y);
+		//this.app.ctx.stroke();
 		this.app.send({'cmd':'m','y':p.y,'x':p.x});
 	}
 };
 Mouse.fn.over = function(e){
 	if(this.leftButtonState===true){
 		var p = this.getPosition(e);
-		this.app.ctx.beginPath();
+		//this.app.ctx.beginPath();
 		this.app.ctx.moveTo(p.x,p.y);
 	}
 };
