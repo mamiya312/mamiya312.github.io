@@ -47,7 +47,7 @@ App.fn.init = function(){
 	this.uiSize  = document.getElementById('size');
 	this.uiColor = document.getElementById('color');
 
-	this.ws = new WebSocket('ws://test.mfmican.net/oekaki');
+	this.ws = new WebSocket('ws://api.mfmican.net/oekaki');
 	//this.ws.onopen = function(){
 	//	this.mouse = new Mouse(_self);
 	//};
